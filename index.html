@@ -13,15 +13,19 @@
 </head>
 
 <body>
-    <p class="score">Score: <span>0</span></p>
-    <main>
-        <div class="grid-wrapper">
-            <section class="grid">
-            </section>
-        </div>
-        <button id="start">Start Game</button>
-    </main>
-    <div class="timer"></div>
+    <div id="start-screen" class="show">
+        <button id="start-button">Start Game</button>
+    </div>
+
+    <div id="game-screen" class="hide grid-wrapper">
+        <p class="score">Score: <span>0</span></p>
+        <section class="grid">
+        </section>
+        <p class="timer"></p>
+    </div>
+
+    <div id="game-over" class="hide"></div>
+
 </body>
 
 </html>

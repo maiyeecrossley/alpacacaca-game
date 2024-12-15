@@ -3,6 +3,7 @@
 
 // create 3 div containers with ids for #startScreen, #gameScreen, #GameOverScreen
 // on initial page load, hide all containers, except for startScreen => create .hide class with display:none
+// create a function for startScreen(), gameScreen() and gameOver()
 // #startScreen will contain title, and startButton => create hasGameStarted boolean
 // on startButton press, set to true
 // startButton => add an id of #start to the button
@@ -76,11 +77,22 @@ let timeRemaining = 0
 
 // Elements
 
+const startScreen = document.getElementById("start-screen")
+const gameScreen = document.getElementById("game-screen")
+
 const gridContainer = document.querySelector(".grid")
-const startButton = document.querySelector("#start")
+const startButton = document.getElementById("start-button")
 const scoreElement = document.querySelector(".score")
 
+
 // Functions
+
+function playGame(){
+    startScreen.classList.add("hide")
+    startScreen.classList.remove("show")
+    gameScreen.classList.remove("hide")
+    console.log("playing game")
+}
 
 function generateBoard(){
     for (let i = 0; i < gridSize; i++){
@@ -96,3 +108,6 @@ function generateBoard(){
 
 generateBoard()
 
+// Events
+
+startButton.addEventListener("click", playGame)

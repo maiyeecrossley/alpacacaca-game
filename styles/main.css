@@ -2,6 +2,7 @@
     box-sizing: border-box;
   }
 
+
 .lilita-one-regular {
     font-family: "Lilita One", sans-serif;
     font-weight: 400;
@@ -27,28 +28,17 @@ main {
     align-items: center;
 }
 
-.grid-wrapper {
-    display: flex;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    grid-template-rows: repeat(14, 1fr);
+#start-screen {
     width: 600px;
     height: 600px;
-    border: 1px solid lightgrey;
-    border-radius: 20px;
     background-color: #b2f2bb;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
 
 }
-div {
-    display: inline-block;
-    border: 1px solid lightgrey;
-  }
 
-
-#start {
+#start-button {
     font-family: "Lilita One", sans-serif;
     width: 200px; 
     height: 50px; 
@@ -60,13 +50,40 @@ div {
     cursor: pointer;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+
 }
 
-#start:hover {
+#start-button:hover {
     transform: scale(1.1);
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
 }
 
-.hide{
+.grid-wrapper {
+    display: flex;
+}
+
+.grid  {
+    display: grid;
+    grid-template-columns: repeat(14, 1fr);
+    grid-template-rows: repeat(14, 1fr);
+    width: 600px;
+    height: 600px;
+    border: 1px solid lightgrey;
+    border-radius: 20px;
+    background-color: #b2f2bb;
+
+}
+
+div {
+    display: inline-block;
+    border: 1px solid lightgrey;
+  }
+
+  .hide {
     display: none;
 }
+
+.show {
+    display: flex;
+}
+
