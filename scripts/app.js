@@ -98,6 +98,20 @@ function addAlpaca(position){
     cells[position].classList.add("alpaca")
 }
 
+function removeAlpaca(position){
+    cells[position].classList.remove("alpaca")
+}
+
+function moveAlpaca(event){
+    const pressedKey = event.code
+
+    removeAlpaca(currentPosition)
+
+    if (pressedKey === `KeyW` && gridColumns <= currentPosition){
+        currentPosition -= gridColumns
+    }
+    addAlpaca(currentPosition)
+}
 
 
 let timeCountdownInterval
@@ -144,4 +158,5 @@ generateBoard()
 
 startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
-gameScreen.addEventListener("click", startTimer)
+gameScreen.addEventListener("keydown", startTimer)
+document.addEventListener('keydown', moveAlpaca)
