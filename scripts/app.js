@@ -1,15 +1,16 @@
 // position the startGameButton to the center of the screen'
 
 
-// create 3 div containers with ids for #startScreen, #gameScreen, #GameOverScreen
+// create 4 div containers with ids for #startScreen, #howToPlayScreen, #gameScreen, #GameOverScreen
 // on initial page load, hide all containers, except for startScreen => create .hide class with display:none
-// create a function for startScreen(), gameScreen() and gameOver()
+// create a function for startScreen(), howToPlayScreen(), gameScreen() and gameOver()
 // #startScreen will contain title, and startButton => create hasGameStarted boolean
 // on startButton press, set to true
 // startButton => add an id of #start to the button
 // create a startButton to be selected => const startButton = document.querySelector(#start)
 // startButton will begin the game
 // add click event to startButton which will show the #gameScreen by removing the .hide class
+// display the instructions in the howToPlayScreen, with a click event on a continueButton once the player has finished reading.
 // call the generateBoard() function
 
 
@@ -73,7 +74,7 @@ const cells = []
 // Variables
 
 let score = 0
-let timeRemaining = 0
+let timeRemaining = 60
 
 // Elements
 
@@ -84,8 +85,21 @@ const gridContainer = document.querySelector(".grid")
 const startButton = document.getElementById("start-button")
 const scoreElement = document.querySelector(".score")
 
+const timerElement = document.querySelector(".timer")
 
 // Functions
+let timeCountdownInterval
+function startTimer() {
+    timeCountdownInterval = setInterval(() => {
+        timeRemaining -= 1
+        timerElement.innerHTML = `Time Remaining: 0:${(timeRemaining)}`
+        if (timeRemaining < 10) {
+            timerElement.innerHTML = `Time Remaining: 0:0${timeRemaining}`
+        }
+        if (timeRemaining <= 0) {
+            clearInterval(timeCountdownInterval)}
+        }, 1000);
+}
 
 function playGame(){
     startScreen.classList.add("hide")
@@ -111,3 +125,4 @@ generateBoard()
 // Events
 
 startButton.addEventListener("click", playGame)
+gameScreen.addEventListener("click", startTimer)

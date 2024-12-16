@@ -11,8 +11,10 @@
 
 body {
     font-family: "Lilita One", sans-serif;
+    color:#846358;
     margin: 0;
   }
+
 
 .score{
     font-size: 20px;
@@ -33,9 +35,15 @@ main {
     height: 600px;
     background-color: #b2f2bb;
     border-radius: 10px;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
+}
+
+img {
+    width: 15%;
+    height: 15%;
 }
 
 #start-button {
@@ -78,6 +86,13 @@ div {
     display: inline-block;
     border: 1px solid lightgrey;
   }
+
+  .timer {
+    font-size: 20px;
+    color: #846358;
+    display: flex;
+    align-items: flex-end;
+} 
 
   .hide {
     display: none;
