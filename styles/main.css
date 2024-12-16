@@ -1,33 +1,27 @@
 * {
     box-sizing: border-box;
-  }
-
-
-.lilita-one-regular {
-    font-family: "Lilita One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-}  
+}
 
 body {
     font-family: "Lilita One", sans-serif;
-    color:#846358;
-    margin: 0;
-  }
-
-
-.score{
-    font-size: 20px;
     color: #846358;
-    display: flex;
-    justify-content: flex-start;
-} 
+    margin: 0;
+}
 
 main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+img {
+    width: 15%;
+    height: 15%;
+}
+
+div {
+    border: 1px solid lightgrey;
 }
 
 #start-screen {
@@ -41,36 +35,74 @@ main {
 
 }
 
-img {
-    width: 15%;
-    height: 15%;
-}
-
-#start-button {
+#start-button,
+#continue-button {
     font-family: "Lilita One", sans-serif;
-    width: 200px; 
-    height: 50px; 
+    width: 200px;
+    height: 50px;
     font-size: 20px;
     background-color: #846358;
-    color: #b2f2bb; 
+    color: #b2f2bb;
     border: #b2f2bb;
-    border-radius: 10px; 
+    border-radius: 10px;
     cursor: pointer;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 
 }
 
-#start-button:hover {
+#how-to-play-screen {
+    width: 600px;
+    height: 600px;
+    background-color: #b2f2bb;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+
+#start-button:hover,
+#continue-button:hover {
     transform: scale(1.1);
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.lilita-one-regular {
+    font-family: "Lilita One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.score {
+    font-size: 20px;
+    color: #846358;
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    z-index: 10;
+    background-color: #b2f2bb;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.level {
+    font-size: 20px;
+    color: #846358;
+    position: absolute;
+    top: 0px;
+    left: 250px;
+    z-index: 10;
+    background-color: #b2f2bb;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 .grid-wrapper {
-    display: flex;
+    position: relative;
 }
 
-.grid  {
+.grid {
     display: grid;
     grid-template-columns: repeat(14, 1fr);
     grid-template-rows: repeat(14, 1fr);
@@ -82,23 +114,30 @@ img {
 
 }
 
-div {
-    display: inline-block;
-    border: 1px solid lightgrey;
+.grid div.alpaca {
+    background-image: url('../assets/alpaca_down.gif');
+    background-repeat: no-repeat;
+    background-size: 150%;
+    background-position: center;
+    z-index: 10;
   }
 
-  .timer {
+.timer {
     font-size: 20px;
     color: #846358;
-    display: flex;
-    align-items: flex-end;
-} 
+    position: absolute;
+    bottom: 0px;
+    left: 20px;
+    z-index: 10;
+    background-color: #b2f2bb;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 
-  .hide {
+.hide {
     display: none;
 }
 
 .show {
     display: flex;
 }
-

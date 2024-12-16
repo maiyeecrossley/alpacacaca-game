@@ -23,8 +23,10 @@ The idea of the game is to guide the alpaca to the top of the flowery field, cro
 #### Assets Attributions:
 
 - [itch.io - Hana Caraka Animals Pack](https://otterisk.itch.io/hana-caraka-animals-pack)
+- [itch.io - Sprout Lands by Cup Nooble](https://cupnooble.itch.io/sprout-lands-asset-pack)
 
 
 #### Tools
 - [Excalidraw - to draw out wire frames](https://excalidraw.com/)
 - [EZGif - Online gif maker and image editor](https://ezgif.com/)
+- [Google Fonts - Lilita One](https://fonts.google.com/specimen/Lilita+One)

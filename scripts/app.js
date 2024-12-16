@@ -9,8 +9,9 @@
 // startButton => add an id of #start to the button
 // create a startButton to be selected => const startButton = document.querySelector(#start)
 // startButton will begin the game
-// add click event to startButton which will show the #gameScreen by removing the .hide class
-// display the instructions in the howToPlayScreen, with a click event on a continueButton once the player has finished reading.
+// add click event to startButton which will show the #howToPlayScreen by removing the .hide class
+// instructions on how to play the game will be displayed on the howToPlayScreen, with a click event on a continueButton once the player has finished reading.
+// clicking on the continueButton will remove the .hide class to show the #gameScreen
 // call the generateBoard() function
 
 
@@ -71,23 +72,34 @@ const gridRows = 14
 const gridColumns = 14
 const gridSize = gridRows * gridColumns
 const cells = []
+const startPosition = 174
 // Variables
 
 let score = 0
 let timeRemaining = 60
+let currentPosition = startPosition
+
 
 // Elements
 
 const startScreen = document.getElementById("start-screen")
 const gameScreen = document.getElementById("game-screen")
+const howToPlayScreen = document.getElementById("how-to-play-screen")
 
 const gridContainer = document.querySelector(".grid")
 const startButton = document.getElementById("start-button")
 const scoreElement = document.querySelector(".score")
-
 const timerElement = document.querySelector(".timer")
+const continueButton = document.getElementById("continue-button")
 
 // Functions
+
+function addAlpaca(position){
+    cells[position].classList.add("alpaca")
+}
+
+
+
 let timeCountdownInterval
 function startTimer() {
     timeCountdownInterval = setInterval(() => {
@@ -101,9 +113,14 @@ function startTimer() {
         }, 1000);
 }
 
-function playGame(){
+function displayInstructions(){
     startScreen.classList.add("hide")
     startScreen.classList.remove("show")
+    howToPlayScreen.classList.remove("hide")
+}
+
+function playGame(){
+    howToPlayScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
     console.log("playing game")
 }
@@ -117,12 +134,14 @@ function generateBoard(){
         cell.style.height = `${1400/gridRows}%`
         gridContainer.appendChild(cell)
         cells.push(cell)
-}
+    }
+    addAlpaca(startPosition)
 }
 
 generateBoard()
 
 // Events
 
-startButton.addEventListener("click", playGame)
+startButton.addEventListener("click", displayInstructions)
+continueButton.addEventListener("click", playGame)
 gameScreen.addEventListener("click", startTimer)
