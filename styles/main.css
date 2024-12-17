@@ -20,10 +20,6 @@ img {
     height: 15%;
 }
 
-div {
-    border: 1px solid lightgrey;
-}
-
 #start-screen {
     width: 600px;
     height: 600px;
@@ -95,30 +91,6 @@ div {
     border-radius: 5px;
 }
 
-.grid-wrapper {
-    position: relative;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    grid-template-rows: repeat(14, 1fr);
-    width: 600px;
-    height: 600px;
-    border: 1px solid lightgrey;
-    border-radius: 20px;
-    background-color: #b2f2bb;
-
-}
-
-.grid div.alpaca {
-    background-image: url('../assets/alpaca_down.gif');
-    background-repeat: no-repeat;
-    background-size: 150%;
-    background-position: center;
-    z-index: 10;
-  }
-
 .timer {
     font-size: 20px;
     color: #846358;
@@ -130,6 +102,48 @@ div {
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+.grid-wrapper {
+    position: relative;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(14, 1fr);
+    grid-template-rows: repeat(14, 1fr);
+    width: 600px;
+    height: 600px;
+    border-radius: 20px;
+    background-color: transparent;
+
+}
+
+.grid, div.alpaca {
+    background-image: url("../assets/large_alpaca.gif");
+    background-repeat: no-repeat;
+    background-color: transparent;
+  }
+
+.grass {
+    background-image: url("../assets/grass_tile.png");
+    background-size: 150%;
+    background-repeat: repeat;
+    background-position: center;
+    background-color: transparent;
+}
+
+.water {
+    background-image: url("../assets/water_tile.png");
+    background-size: 150%;
+    background-repeat: repeat;
+    background-position: center;
+    background-color: transparent;
+}
+
+.background {
+    background-color: #b2f2bb;
+}
+
 
 .hide {
     display: none;

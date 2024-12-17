@@ -38,7 +38,7 @@
 // add a class of alpaca => const alpaca = document.classList.add(".alpaca")
 // create a function to remove the alpaca from its current position => function removeAlpaca(){}
 // remove the class of alpaca => alpaca.classList.remove("alpaca")
-    
+
 // to add the cows/logs, create an array of 'assets'
 // appearance of movement will be adding/removing the class with a short interval using setInterval()
 // each asset will decrement/increment an index of the cell
@@ -94,27 +94,58 @@ const continueButton = document.getElementById("continue-button")
 
 // Functions
 
-function addAlpaca(position){
+function addAlpaca(position) {
     cells[position].classList.add("alpaca")
 }
 
-function removeAlpaca(position){
+function removeAlpaca(position) {
     cells[position].classList.remove("alpaca")
 }
 
-function moveAlpaca(event){
-    const pressedKey = event.code
+function moveAlpaca(event) {
+    const keyPress = event.code
 
-    removeAlpaca(currentPosition)
-
-    if (pressedKey === `KeyW` && gridColumns <= currentPosition){
+    if (keyPress === "KeyW" && gridColumns <= currentPosition) {
+        if (!hasGameStarted) {
+            startTimer()
+        }
+        removeAlpaca(currentPosition)
         currentPosition -= gridColumns
+        addAlpaca(currentPosition)
+    } else if (keyPress === "KeyS" && currentPosition + gridColumns <= gridSize - 1) {
+        removeAlpaca(currentPosition)
+        currentPosition += gridColumns
+        addAlpaca(currentPosition)
+    } else if (keyPress === "KeyA" && currentPosition % gridColumns !== 0) {
+        removeAlpaca(currentPosition)
+        currentPosition--
+        addAlpaca(currentPosition)
+    } else if (keyPress === "KeyD" && currentPosition % gridColumns !== gridColumns - 1) {
+        removeAlpaca(currentPosition)
+        currentPosition++
+        addAlpaca(currentPosition)
+
     }
-    addAlpaca(currentPosition)
 }
+// remove and add alpaca functions only executed with valid keypress and position
+
+// function moveAlpaca(event) {
+//     if (! hasGameStarted) {
+//         startTimer()
+//     }
+//     const pressedKey = event.code
+//     removeAlpaca(currentPosition)
+//     if (pressedKey === `KeyW` && gridColumns <= currentPosition) {
+//         currentPosition -= gridColumns
+//     }
+//     addAlpaca(currentPosition)
+// }
+
+
 
 
 let timeCountdownInterval
+let hasGameStarted = false
 function startTimer() {
     timeCountdownInterval = setInterval(() => {
         timeRemaining -= 1
@@ -123,29 +154,40 @@ function startTimer() {
             timerElement.innerHTML = `Time Remaining: 0:0${timeRemaining}`
         }
         if (timeRemaining <= 0) {
-            clearInterval(timeCountdownInterval)}
-        }, 1000);
+            clearInterval(timeCountdownInterval)
+        }
+    }, 1000);
+    hasGameStarted = true
 }
 
-function displayInstructions(){
+function displayInstructions() {
     startScreen.classList.add("hide")
     startScreen.classList.remove("show")
     howToPlayScreen.classList.remove("hide")
 }
 
-function playGame(){
+function playGame() {
     howToPlayScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
     console.log("playing game")
 }
 
-function generateBoard(){
-    for (let i = 0; i < gridSize; i++){
+function generateBoard() {
+    for (let i = 0; i < gridSize; i++) {
         const cell = document.createElement('div')
         cell.classList.add("cell")
+
+        const row = Math.floor(i / gridColumns)
+        if (row === 0 || row === 13) {
+            cell.classList.add("background")
+        } else if (row % 2 === 0) {
+            cell.classList.add("water")
+        } else {
+            cell.classList.add("grass")
+        }
         cell.innerHTML = i
-        cell.style.width = `${1400/gridColumns}%`
-        cell.style.height = `${1400/gridRows}%`
+        cell.style.width = `${1400 / gridColumns}%`
+        cell.style.height = `${1400 / gridRows}%`
         gridContainer.appendChild(cell)
         cells.push(cell)
     }
@@ -158,5 +200,4 @@ generateBoard()
 
 startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
-gameScreen.addEventListener("keydown", startTimer)
 document.addEventListener('keydown', moveAlpaca)
