@@ -8,13 +8,6 @@ body {
     margin: 0;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 img {
     width: 15%;
     height: 15%;
@@ -27,6 +20,17 @@ img {
     border-radius: 10px;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+
+}
+
+#how-to-play-screen {
+    width: 600px;
+    height: 600px;
+    background-color: #b2f2bb;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-items: center;
     align-items: center;
 
 }
@@ -46,15 +50,6 @@ img {
 
 }
 
-#how-to-play-screen {
-    width: 600px;
-    height: 600px;
-    background-color: #b2f2bb;
-    border-radius: 10px;
-    flex-direction: column;
-    justify-items: center;
-    align-items: center;
-}
 
 #start-button:hover, #continue-button:hover {
     transform: scale(1.1);
@@ -118,35 +113,61 @@ img {
 
 }
 
-.grass {
+div.grass {
+    position: relative;
     background-image: url("../assets/images/grass_tile.png");
     background-size: cover;
     background-repeat: repeat;
 }
 
-.water {
+div.water {
+    position: relative;
     background-image: url("../assets/images/water_tile.png");
     background-size: cover;
     background-repeat: repeat;
 }
 
-.alpaca {
+div.alpaca::after {
+    content: " ";
     background-image: url("../assets/images/alpaca_down.gif");
     background-repeat: no-repeat;
-    background-size: contain;
-
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
-.background {
+div.background {
+    position: relative;
     background-color: #b2f2bb;
 }
 
-.cow-left {
+div.cow-left::after {
+    content: " ";
     background-image: url("../assets/images/cow_left_1.gif");
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
+/* 
+.cow-right {
+
+}
+
+.logs-left {
+
+}
+
+.logs-right {
+
+} */
 
 .hide {
     display: none;
@@ -155,3 +176,9 @@ img {
 .show {
     display: flex;
 }
+
+
+
+
+
+

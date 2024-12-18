@@ -75,7 +75,11 @@ const startPosition = 174
 
 
 // Variables
-let cowIndex = [45, 46, 47]
+
+
+let stopCows
+
+let cowIndexs = [53, 54, 55]
 
 let score = 0
 let timeRemaining = 30
@@ -93,32 +97,36 @@ const scoreElement = document.querySelector(".score")
 const timerElement = document.querySelector(".timer")
 const continueButton = document.getElementById("continue-button")
 
+
+
+
 // Functions
+
+// function stopTheCows() {
+//     clearInterval(cowIndexs[i] <= 42)
+// }
 
 
 function addLeftFacingCows() {
     setInterval(() => {
 
-        let originalCowIndex = [...cowIndex]
+        let originalCowIndex = [...cowIndexs]
 
-        cowIndex.forEach((position) => {
+        originalCowIndex.forEach((index) => {
+            cells[index].classList.remove("cow-left")
+        })
+        for (let i = 0; i < cowIndexs.length; i++) {
+            cowIndexs[i] -= 1
+        }
+
+        cowIndexs.forEach((position) => {
             console.log(position)
             cells[position].classList.add("cow-left")
         })
 
-        for (let i = 0; i < cowIndex.length; i++) {
-            cowIndex[i] -= 1
-        }
-
-        setInterval(() => {
-            originalCowIndex.forEach((index) => {
-                cells[index].classList.remove("cow-left")
-            })
-        }, 600)
-        
-    }, 200)
-
+    }, 400)
 }
+
 
 
 function addAlpaca(position) {
@@ -171,6 +179,7 @@ function startTimer() {
     hasGameStarted = true
 }
 
+
 function displayInstructions() {
     startScreen.classList.add("hide")
     startScreen.classList.remove("show")
@@ -207,10 +216,10 @@ function generateBoard() {
 }
 
 generateBoard()
-addLeftFacingCows(cowIndex)
-
+addLeftFacingCows(cowIndexs)
 // Events
 
 startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
 document.addEventListener('keydown', moveAlpaca)
+//need to addLeftFacingGames on keypress of continue
