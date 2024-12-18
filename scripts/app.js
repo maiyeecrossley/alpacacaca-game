@@ -90,13 +90,15 @@ let lives = 3
 const startScreen = document.getElementById("start-screen")
 const gameScreen = document.getElementById("game-screen")
 const howToPlayScreen = document.getElementById("how-to-play-screen")
+const gameOverScreen = document.getElementById("game-over-screen")
 const startButton = document.getElementById("start-button")
 const continueButton = document.getElementById("continue-button")
+const tryAgainButton = document.getElementById("try-again-button")
 
 const gridContainer = document.querySelector(".grid")
 const scoreElement = document.querySelector(".score")
 const timerElement = document.querySelector(".timer")
-const numberOfLivesElement = document.querySelector(".lives")
+const numberOfLives = document.querySelector(".lives")
 
 
 // Functions
@@ -153,11 +155,11 @@ function addRightFacingLogs() {
 }
 
 
-function checkCollision(cellIndex) {
+function increaseScore(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("logs-right")) {
         score += 100
         scoreElement.innerHTML = `Score: ${score}`
-        console.log("Collision score")
+        console.log("scored!!")
     }
 
 }
@@ -165,9 +167,20 @@ function checkCollision(cellIndex) {
 function removeLives(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("cow-left")) {
         lives -= 1
-        numberOfLivesElement.innerHTML = `Lives: ${lives}`
-        console.log("lost a life")
+        removeAlpaca(currentPosition)
+        addAlpaca(startPosition)
+        numberOfLives.innerHTML = `Lives: ${lives}`
+            if (lives === 0) {
+                gameOver()
+        } 
+            console.log("lost a life")
+        }
     }
+
+
+function gameOver() {
+    gameOverScreen.classList.remove("hide")
+    gameScreen.classList.add("hide")
 }
 
 
@@ -184,14 +197,15 @@ function removeAlpaca(position) {
 function moveAlpaca(event) {
     const keyPress = event.code
 
-    if (keyPress === "KeyW" && gridColumns <= currentPosition) {
+    if (keyPress === "KeyW" && gridColumns <= currentPosition - 14) {
+
         if (!hasGameStarted) {
             startTimer()
         }
         removeAlpaca(currentPosition)
         currentPosition -= gridColumns
         addAlpaca(currentPosition)
-    } else if (keyPress === "KeyS" && currentPosition + gridColumns <= gridSize - 1) {
+    } else if (keyPress === "KeyS" && currentPosition + gridColumns <= gridSize - 14) {
         removeAlpaca(currentPosition)
         currentPosition += gridColumns
         addAlpaca(currentPosition)
@@ -205,7 +219,7 @@ function moveAlpaca(event) {
         addAlpaca(currentPosition)
 
     }
-    checkCollision(currentPosition)
+    increaseScore(currentPosition)
     removeLives(currentPosition)
 }
 
@@ -215,7 +229,7 @@ let hasGameStarted = false
 function startTimer() {
     timeCountdownInterval = setInterval(() => {
         timeRemaining -= 1
-        timerElement.innerHTML = `Time Remaining: 0:${(timeRemaining)}`
+        timerElement.innerHTML = `Time Remaining: 0:${timeRemaining}`
         if (timeRemaining < 10) {
             timerElement.innerHTML = `Time Remaining: 0:0${timeRemaining}`
         }
@@ -236,6 +250,8 @@ function displayInstructions() {
 function playGame() {
     howToPlayScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
+    gameOverScreen.classList.add("hide")
+
 }
 
 function generateBoard() {
@@ -268,5 +284,7 @@ addRightFacingLogs(logIndexs)
 
 startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
+tryAgainButton.addEventListener("click", playGame)
 document.addEventListener('keydown', moveAlpaca)
+
 //need to addLeftFacingGames on keypress of continue
