@@ -45,7 +45,7 @@
 // depending on the direction of movement, ie if moving to the left of the screen, the index will be decremented, and if moving to the right the index will be incremented
 // create a function for the assets to move to the left => function moveAssetsLeft()
 // create a function for the assets to move to the right => function moveAssetsRight()
-// this will be achieved using a for each
+// this will be achieved using a for each loop to iterate through the index of cows/logs in the array
 
 
 // *** Score ***
@@ -61,8 +61,7 @@
 // *** Timer ***
 // the player will have 1 minute (60 seconds) to move the alpaca to the top 'safe' part of the screen
 // create a let = timeRemaining = 60
-// then create a function that starts the timer on 
-// time can be formatted to MM:SS using => .toLocaleTimeString()
+// then create a function that starts the timer on key press
 
 
 
@@ -73,12 +72,14 @@ const gridColumns = 14
 const gridSize = gridRows * gridColumns
 const cells = []
 const startPosition = 174
+
+
 // Variables
+let cowIndex = [45, 46, 47]
 
 let score = 0
-let timeRemaining = 60
+let timeRemaining = 30
 let currentPosition = startPosition
-
 
 // Elements
 
@@ -93,6 +94,32 @@ const timerElement = document.querySelector(".timer")
 const continueButton = document.getElementById("continue-button")
 
 // Functions
+
+
+function addLeftFacingCows() {
+    setInterval(() => {
+
+        let originalCowIndex = [...cowIndex]
+
+        cowIndex.forEach((position) => {
+            console.log(position)
+            cells[position].classList.add("cow-left")
+        })
+
+        for (let i = 0; i < cowIndex.length; i++) {
+            cowIndex[i] -= 1
+        }
+
+        setInterval(() => {
+            originalCowIndex.forEach((index) => {
+                cells[index].classList.remove("cow-left")
+            })
+        }, 600)
+        
+    }, 200)
+
+}
+
 
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
@@ -127,22 +154,6 @@ function moveAlpaca(event) {
 
     }
 }
-// remove and add alpaca functions only executed with valid keypress and position
-
-// function moveAlpaca(event) {
-//     if (! hasGameStarted) {
-//         startTimer()
-//     }
-//     const pressedKey = event.code
-//     removeAlpaca(currentPosition)
-//     if (pressedKey === `KeyW` && gridColumns <= currentPosition) {
-//         currentPosition -= gridColumns
-//     }
-//     addAlpaca(currentPosition)
-// }
-
-
-
 
 let timeCountdownInterval
 let hasGameStarted = false
@@ -191,10 +202,12 @@ function generateBoard() {
         gridContainer.appendChild(cell)
         cells.push(cell)
     }
+
     addAlpaca(startPosition)
 }
 
 generateBoard()
+addLeftFacingCows(cowIndex)
 
 // Events
 

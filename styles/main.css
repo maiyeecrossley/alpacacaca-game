@@ -118,32 +118,35 @@ img {
 
 }
 
-.grid, div.alpaca {
-    background-image: url("../assets/large_alpaca.gif");
-    background-repeat: no-repeat;
-    background-color: transparent;
-  }
-
 .grass {
-    background-image: url("../assets/grass_tile.png");
-    background-size: 150%;
+    background-image: url("../assets/images/grass_tile.png");
+    background-size: cover;
     background-repeat: repeat;
-    background-position: center;
-    background-color: transparent;
 }
 
 .water {
-    background-image: url("../assets/water_tile.png");
-    background-size: 150%;
+    background-image: url("../assets/images/water_tile.png");
+    background-size: cover;
     background-repeat: repeat;
-    background-position: center;
-    background-color: transparent;
+}
+
+.alpaca {
+    background-image: url("../assets/images/alpaca_down.gif");
+    background-repeat: no-repeat;
+    background-size: contain;
+
 }
 
 .background {
     background-color: #b2f2bb;
 }
 
+.cow-left {
+    background-image: url("../assets/images/cow_left_1.gif");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
 .hide {
     display: none;
