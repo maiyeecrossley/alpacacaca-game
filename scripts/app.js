@@ -83,20 +83,20 @@ let logIndexs = [84, 85, 86]
 let score = 0
 let timeRemaining = 30
 let currentPosition = startPosition
+let lives = 3
 
 // Elements
 
 const startScreen = document.getElementById("start-screen")
 const gameScreen = document.getElementById("game-screen")
 const howToPlayScreen = document.getElementById("how-to-play-screen")
-
-const gridContainer = document.querySelector(".grid")
 const startButton = document.getElementById("start-button")
-const scoreElement = document.querySelector(".score")
-const timerElement = document.querySelector(".timer")
 const continueButton = document.getElementById("continue-button")
 
-
+const gridContainer = document.querySelector(".grid")
+const scoreElement = document.querySelector(".score")
+const timerElement = document.querySelector(".timer")
+const numberOfLivesElement = document.querySelector(".lives")
 
 
 // Functions
@@ -162,6 +162,15 @@ function checkCollision(cellIndex) {
 
 }
 
+function removeLives(cellIndex) {
+    if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("cow-left")) {
+        lives -= 1
+        numberOfLivesElement.innerHTML = `Lives: ${lives}`
+        console.log("lost a life")
+    }
+}
+
+
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
 }
@@ -197,6 +206,7 @@ function moveAlpaca(event) {
 
     }
     checkCollision(currentPosition)
+    removeLives(currentPosition)
 }
 
 

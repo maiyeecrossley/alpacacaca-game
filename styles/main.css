@@ -74,6 +74,18 @@ img {
     border-radius: 5px;
 }
 
+.lives {
+    font-size: 20px;
+    color: #846358;
+    position: absolute;
+    top: 0px;
+    left: 500px;
+    z-index: 10;
+    background-color: #b2f2bb;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
 .level {
     font-size: 20px;
     color: #846358;
