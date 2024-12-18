@@ -144,7 +144,7 @@ div.background {
     background-color: #b2f2bb;
 }
 
-div.cow-left::after {
+div.cow-left::before {
     content: " ";
     background-image: url("../assets/images/cow_left_1.gif");
     background-size: cover;
@@ -157,7 +157,7 @@ div.cow-left::after {
     right: 0;
 }
 
-div.logs-right::after {
+div.logs-right::before {
     content: " ";
     background-image: url("../assets/images/log_v2_2.png");
     background-size: contain;

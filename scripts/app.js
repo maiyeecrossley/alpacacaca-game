@@ -77,8 +77,6 @@ const startPosition = 174
 // Variables
 
 
-
-
 let cowIndexs = [53, 54, 55]
 let logIndexs = [84, 85, 86]
 
@@ -104,7 +102,7 @@ const continueButton = document.getElementById("continue-button")
 // Functions
 
 function addLeftFacingCows() {
-   let cowInterval = setInterval(() => {
+    let cowInterval = setInterval(() => {
 
         let originalCowIndex = [...cowIndexs]
 
@@ -120,9 +118,8 @@ function addLeftFacingCows() {
                 return
             }
         }
-    
+
         cowIndexs.forEach((position) => {
-            console.log(position)
             cells[position].classList.add("cow-left")
         })
 
@@ -132,38 +129,48 @@ function addLeftFacingCows() {
 
 function addRightFacingLogs() {
     let logInterval = setInterval(() => {
- 
-         let originalLogIndex = [...logIndexs]
- 
-         originalLogIndex.forEach((index) => {
-             cells[index].classList.remove("logs-right")
-         })
-         for (let i = 0; i < logIndexs.length; i++) {
-             logIndexs[i] += 1
-             if (logIndexs[i] > 97) {
-                 clearInterval(logInterval)
-                 logIndexs = [84, 85, 86]
-                 addRightFacingLogs()
-                 return
-             }
-         }
-     
-         logIndexs.forEach((position) => {
-             console.log(position)
-             cells[position].classList.add("logs-right")
-         })
- 
-     }, 500)
- }
 
+        let originalLogIndex = [...logIndexs]
+
+        originalLogIndex.forEach((index) => {
+            cells[index].classList.remove("logs-right")
+        })
+        for (let i = 0; i < logIndexs.length; i++) {
+            logIndexs[i] += 1
+            if (logIndexs[i] > 97) {
+                clearInterval(logInterval)
+                logIndexs = [84, 85, 86]
+                addRightFacingLogs()
+                return
+            }
+        }
+
+        logIndexs.forEach((position) => {
+            cells[position].classList.add("logs-right")
+        })
+
+    }, 500)
+}
+
+
+function checkCollision(cellIndex) {
+    if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("logs-right")) {
+        score += 100
+        scoreElement.innerHTML = `Score: ${score}`
+        console.log("Collision score")
+    }
+
+}
 
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
 }
 
+
 function removeAlpaca(position) {
     cells[position].classList.remove("alpaca")
 }
+
 
 function moveAlpaca(event) {
     const keyPress = event.code
@@ -189,7 +196,9 @@ function moveAlpaca(event) {
         addAlpaca(currentPosition)
 
     }
+    checkCollision(currentPosition)
 }
+
 
 let timeCountdownInterval
 let hasGameStarted = false
@@ -217,7 +226,6 @@ function displayInstructions() {
 function playGame() {
     howToPlayScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
-    console.log("playing game")
 }
 
 function generateBoard() {
