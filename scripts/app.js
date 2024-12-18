@@ -77,9 +77,10 @@ const startPosition = 174
 // Variables
 
 
-let stopCows
+
 
 let cowIndexs = [53, 54, 55]
+let logIndexs = [84, 85, 86]
 
 let score = 0
 let timeRemaining = 30
@@ -102,13 +103,8 @@ const continueButton = document.getElementById("continue-button")
 
 // Functions
 
-// function stopTheCows() {
-//     clearInterval(cowIndexs[i] <= 42)
-// }
-
-
 function addLeftFacingCows() {
-    setInterval(() => {
+   let cowInterval = setInterval(() => {
 
         let originalCowIndex = [...cowIndexs]
 
@@ -117,8 +113,14 @@ function addLeftFacingCows() {
         })
         for (let i = 0; i < cowIndexs.length; i++) {
             cowIndexs[i] -= 1
+            if (cowIndexs[i] < 42) {
+                clearInterval(cowInterval)
+                cowIndexs = [53, 54, 55]
+                addLeftFacingCows()
+                return
+            }
         }
-
+    
         cowIndexs.forEach((position) => {
             console.log(position)
             cells[position].classList.add("cow-left")
@@ -127,6 +129,32 @@ function addLeftFacingCows() {
     }, 400)
 }
 
+
+function addRightFacingLogs() {
+    let logInterval = setInterval(() => {
+ 
+         let originalLogIndex = [...logIndexs]
+ 
+         originalLogIndex.forEach((index) => {
+             cells[index].classList.remove("logs-right")
+         })
+         for (let i = 0; i < logIndexs.length; i++) {
+             logIndexs[i] += 1
+             if (logIndexs[i] > 97) {
+                 clearInterval(logInterval)
+                 logIndexs = [84, 85, 86]
+                 addRightFacingLogs()
+                 return
+             }
+         }
+     
+         logIndexs.forEach((position) => {
+             console.log(position)
+             cells[position].classList.add("logs-right")
+         })
+ 
+     }, 500)
+ }
 
 
 function addAlpaca(position) {
@@ -217,6 +245,7 @@ function generateBoard() {
 
 generateBoard()
 addLeftFacingCows(cowIndexs)
+addRightFacingLogs(logIndexs)
 // Events
 
 startButton.addEventListener("click", displayInstructions)
