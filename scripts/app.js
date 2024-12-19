@@ -88,7 +88,7 @@ const gridSize = gridRows * gridColumns
 let cells = []
 
 let cowIndexs = [53, 54, 55]
-let logIndexs1 = [154, 155, 156]
+let logIndexs1 = [153, 154, 155]
 let logIndexs2 = [126, 129]
 
 
@@ -300,38 +300,41 @@ function startTimer() {
 }
 
 function gameReload() {
-    startScreen.classList.remove("hide")
-    gameWonScreen.classList.add("hide")
+    startScreen.classList.toggle("show")
 }
 
 function displayInstructions() {
-    startScreen.classList.add("hide")
-    startScreen.classList.remove("show")
-    howToPlayScreen.classList.remove("hide")
+    startScreen.classList.toggle("hide")
+    startScreen.classList.toggle("show")
+    howToPlayScreen.classList.toggle("hide")
+    howToPlayScreen.classList.toggle("show")
 }
 
 function playGame() {
-    gameScreen.classList.remove("hide")
-    howToPlayScreen.classList.add("hide")
+    gameScreen.classList.toggle("hide")
+    howToPlayScreen.classList.toggle("hide")
+    howToPlayScreen.classList.toggle("show")
 }
 
 function gameOver() {
-    gameOverScreen.classList.remove("hide")
-    gameScreen.classList.add("hide")
+    gameOverScreen.classList.toggle("hide")
+    gameScreen.classList.toggle("hide")
+    gameOverScreen.classList.toggle("show")
 
 }
 
 function gameWon() {
-    gameWonScreen.classList.remove("hide")
-    gameScreen.classList.add("hide")
+    gameWonScreen.classList.toggle("hide")
+    gameScreen.classList.toggle("hide")
+    gameWonScreen.classList.toggle("show")
 
 }
 
 
 function resetGame() {
-    gameOverScreen.classList.add("hide")
-    gameScreen.classList.remove("hide")
-    gameWonScreen.classList.add("hide")
+    gameOverScreen.classList.toggle("hide")
+    gameOverScreen.classList.toggle("show")
+    gameScreen.classList.toggle("hide")
     startPosition = randomStartPosition(12)
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
@@ -371,9 +374,9 @@ function generateBoard() {
     startPosition = randomStartPosition(12)
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
+    currentPosition = startPosition
     addLeftFacingCows(cowIndexs)
-    addRightFacingLogs(logIndexs1)
-    addRightFacingLogs2(logIndexs2)
+
 
 }
 

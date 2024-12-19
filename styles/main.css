@@ -14,8 +14,8 @@ img {
 }
 
 h1 {
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 .hide {
@@ -34,6 +34,7 @@ h1 {
     height: 600px;
     background-color: #b2f2bb;
     border-radius: 10px;
+    text-align: center;
     flex-direction: column;
     justify-content: center;
     align-items: center;
