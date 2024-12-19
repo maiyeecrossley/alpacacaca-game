@@ -89,7 +89,7 @@ const startPosition = 174
 let cells = []
 
 let cowIndexs = [53, 54, 55]
-let logIndexs = [84, 85, 86]
+let logIndexs = [154, 155, 156]
 
 let score = 0
 let timeRemaining = 30
@@ -104,9 +104,12 @@ const startScreen = document.getElementById("start-screen")
 const gameScreen = document.getElementById("game-screen")
 const howToPlayScreen = document.getElementById("how-to-play-screen")
 const gameOverScreen = document.getElementById("game-over-screen")
+const gameWonScreen = document.getElementById("game-won-screen")
 const startButton = document.getElementById("start-button")
 const continueButton = document.getElementById("continue-button")
 const tryAgainButton = document.getElementById("try-again-button")
+const nextLevelButton = document.getElementById("next-level-button")
+const quitGameButton = document.getElementById("quit-game-button")
 
 const gridContainer = document.querySelector(".grid")
 const scoreElement = document.querySelector(".score")
@@ -155,9 +158,9 @@ function addRightFacingLogs() {
         })
         for (let i = 0; i < logIndexs.length; i++) {
             logIndexs[i] += 1
-            if (logIndexs[i] > 97) {
+            if (logIndexs[i] > 167) {
                 clearInterval(logInterval)
-                logIndexs = [84, 85, 86]
+                logIndexs = [154, 156, 157]
                 addRightFacingLogs()
                 return
             }
@@ -172,17 +175,17 @@ function addRightFacingLogs() {
 
 
 function increaseScore(cellIndex) {
-    if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("logs-right")) {
+    if (cells[cellIndex].classList.contains("alpaca") &&
+        cells[cellIndex].classList.contains("logs-right")) {
         score += 100
         scoreElement.innerHTML = `Score: ${score}`
-        console.log("scored!!")
     }
-
 }
 
 function removeLives(cellIndex) {
-    if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("cow-left")) {
-        
+    if (cells[cellIndex].classList.contains("alpaca") &&
+        cells[cellIndex].classList.contains("cow-left")) {
+
         lives -= 1
         numberOfLives.innerHTML = `Lives: ${lives}`
         if (lives === 0) {
@@ -192,28 +195,24 @@ function removeLives(cellIndex) {
         removeAlpaca(currentPosition)
         addAlpaca(startPosition)
         currentPosition = startPosition
-
+    }
+    if (
+        cells[cellIndex].classList.contains("alpaca") &&
+        cells[cellIndex].classList.contains("water") &&
+        !cells[cellIndex].classList.contains("logs-right")
+    ) {
+        lives -= 1;
+        numberOfLives.innerHTML = `Lives: ${lives}`;
+        if (lives === 0) {
+            gameOver();
+            return;
+        }
+        removeAlpaca(currentPosition)
+        addAlpaca(startPosition)
+        currentPosition = startPosition
     }
 }
 
-
-function gameOver() {
-    gameOverScreen.classList.remove("hide")
-    gameScreen.classList.add("hide")
-}
-
-function resetGame(){
-    gameOverScreen.classList.add("hide")
-    gameScreen.classList.remove("hide")
-    hasGameStarted = false
-    timeRemaining = 30
-    timerElement.innerHTML = `Time Remaining: 0:${timeRemaining}`
-    clearInterval(timeCountdownInterval)
-    score = 0
-    scoreElement.innerHTML = `Score: ${score}`
-    lives = 3
-    numberOfLives.innerHTML = `Lives: ${lives}`
-}
 
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
@@ -239,10 +238,14 @@ function moveAlpaca(event) {
         currentPosition--
     } else if (keyPress === "KeyD" && currentPosition % gridColumns !== gridColumns - 1) {
         currentPosition++
-    } 
+    }
     addAlpaca(currentPosition)
     increaseScore(currentPosition)
     removeLives(currentPosition)
+
+    if (currentPosition >= gridColumns && currentPosition < gridColumns * 2) {
+        gameWon()
+    }
 }
 
 
@@ -255,11 +258,17 @@ function startTimer() {
         }
         if (timeRemaining <= 0) {
             clearInterval(timeCountdownInterval)
+            gameOver()
         }
     }, 1000);
     hasGameStarted = true
 }
 
+function gameReload() {
+    startScreen.classList.remove("hide")
+    startScreen.classList.add("show")
+    gameWonScreen.classList.add("hide")
+}
 
 function displayInstructions() {
     startScreen.classList.add("hide")
@@ -270,9 +279,36 @@ function displayInstructions() {
 function playGame() {
     howToPlayScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
-    gameOverScreen.classList.add("hide")
-
 }
+
+function gameOver() {
+    gameOverScreen.classList.remove("hide")
+    gameScreen.classList.add("hide")
+}
+
+function gameWon() {
+    gameWonScreen.classList.remove("hide")
+    gameScreen.classList.add("hide")
+}
+
+
+function resetGame() {
+    gameOverScreen.classList.add("hide")
+    gameScreen.classList.remove("hide")
+    gameWonScreen.classList.add("hide")
+    removeAlpaca(currentPosition)
+    addAlpaca(startPosition)
+    currentPosition = startPosition
+    hasGameStarted = false
+    timeRemaining = 30
+    timerElement.innerHTML = `Time Remaining: 0:${timeRemaining}`
+    clearInterval(timeCountdownInterval)
+    score = 0
+    scoreElement.innerHTML = `Score: ${score}`
+    lives = 3
+    numberOfLives.innerHTML = `Lives: ${lives}`
+}
+
 
 function generateBoard() {
     cells = []
@@ -283,10 +319,10 @@ function generateBoard() {
         const row = Math.floor(i / gridColumns)
         if (row === 0 || row === 13) {
             cell.classList.add("background")
-        } else if (row % 2 === 0) {
-            cell.classList.add("water")
-        } else {
+        } else if (row === 12 || row === 10 || row === 7 || row === 5 || row === 3 || row === 1) {
             cell.classList.add("grass")
+        } else {
+            cell.classList.add("water")
         }
         cell.innerHTML = i
         cell.style.width = `${1400 / gridColumns}%`
@@ -308,6 +344,5 @@ startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
 tryAgainButton.addEventListener("click", resetGame)
 document.addEventListener('keydown', moveAlpaca)
-
-
-//need to addLeftFacingGames on keypress of continue
+nextLevelButton.addEventListener("click", resetGame)
+quitGameButton.addEventListener("click", gameReload)
