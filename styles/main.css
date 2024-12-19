@@ -52,7 +52,9 @@ h1 {
 }
 
 
-#start-button, #continue-button, #try-again-button {
+#start-button,
+#continue-button,
+#try-again-button {
     font-family: "Lilita One", sans-serif;
     width: 200px;
     height: 50px;
@@ -68,7 +70,9 @@ h1 {
 }
 
 
-#start-button:hover, #continue-button:hover, #try-again-button:hover {
+#start-button:hover,
+#continue-button:hover,
+#try-again-button:hover {
     transform: scale(1.1);
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
 }
@@ -208,9 +212,3 @@ div.background {
 .show {
     display: flex;
 }
-
-
-
-
-
-

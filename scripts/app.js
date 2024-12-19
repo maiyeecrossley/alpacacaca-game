@@ -57,11 +57,23 @@
 // remove class of Alpaca
 // for the score to be displayed => scoreElement.innerHTML = score
 
+// *** Lives *** 
+// when the alpaca collides with a cow, the number of lives will be decremented
+// each time the number of lives decreases, the alpaca's position will be reset to its starting position
+// create a variable => let lives = 3
+// once the lives reach 0, the gameOver screen will be displayed with a "try again" button
+// the try again button will reset the game => moving the alpaca back to its starting position, timer will be reset back to 30 seconds, and score reset back to 0
+
 
 // *** Timer ***
-// the player will have 1 minute (60 seconds) to move the alpaca to the top 'safe' part of the screen
-// create a let = timeRemaining = 60
+// the player will have 30 seconds to move the alpaca to the top 'safe' part of the screen
+// create a let = timeRemaining = 30
 // then create a function that starts the timer on key press
+// once the timer reaches 0, the gameOver will be displayed with a "try again" button
+
+
+// create a resetGame function to reset the timer/score/lives
+// which will be called when the ‘try again’ button is pressed
 
 
 
@@ -70,12 +82,11 @@
 const gridRows = 14
 const gridColumns = 14
 const gridSize = gridRows * gridColumns
-const cells = []
 const startPosition = 174
 
 
 // Variables
-
+let cells = []
 
 let cowIndexs = [53, 54, 55]
 let logIndexs = [84, 85, 86]
@@ -84,6 +95,8 @@ let score = 0
 let timeRemaining = 30
 let currentPosition = startPosition
 let lives = 3
+let timeCountdownInterval
+let hasGameStarted = false
 
 // Elements
 
@@ -102,6 +115,8 @@ const numberOfLives = document.querySelector(".lives")
 
 
 // Functions
+
+
 
 function addLeftFacingCows() {
     let cowInterval = setInterval(() => {
@@ -123,6 +138,7 @@ function addLeftFacingCows() {
 
         cowIndexs.forEach((position) => {
             cells[position].classList.add("cow-left")
+            removeLives(position)
         })
 
     }, 400)
@@ -166,16 +182,19 @@ function increaseScore(cellIndex) {
 
 function removeLives(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") && cells[cellIndex].classList.contains("cow-left")) {
+        
         lives -= 1
+        numberOfLives.innerHTML = `Lives: ${lives}`
+        if (lives === 0) {
+            gameOver()
+            return
+        }
         removeAlpaca(currentPosition)
         addAlpaca(startPosition)
-        numberOfLives.innerHTML = `Lives: ${lives}`
-            if (lives === 0) {
-                gameOver()
-        } 
-            console.log("lost a life")
-        }
+        currentPosition = startPosition
+
     }
+}
 
 
 function gameOver() {
@@ -183,49 +202,50 @@ function gameOver() {
     gameScreen.classList.add("hide")
 }
 
+function resetGame(){
+    gameOverScreen.classList.add("hide")
+    gameScreen.classList.remove("hide")
+    hasGameStarted = false
+    timeRemaining = 30
+    timerElement.innerHTML = `Time Remaining: 0:${timeRemaining}`
+    clearInterval(timeCountdownInterval)
+    score = 0
+    scoreElement.innerHTML = `Score: ${score}`
+    lives = 3
+    numberOfLives.innerHTML = `Lives: ${lives}`
+}
 
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
 }
 
-
 function removeAlpaca(position) {
     cells[position].classList.remove("alpaca")
 }
 
-
 function moveAlpaca(event) {
     const keyPress = event.code
 
-    if (keyPress === "KeyW" && gridColumns <= currentPosition - 14) {
+    removeAlpaca(currentPosition)
 
+    if (keyPress === "KeyW" && gridColumns <= currentPosition - 14) {
         if (!hasGameStarted) {
             startTimer()
         }
-        removeAlpaca(currentPosition)
         currentPosition -= gridColumns
-        addAlpaca(currentPosition)
     } else if (keyPress === "KeyS" && currentPosition + gridColumns <= gridSize - 14) {
-        removeAlpaca(currentPosition)
         currentPosition += gridColumns
-        addAlpaca(currentPosition)
     } else if (keyPress === "KeyA" && currentPosition % gridColumns !== 0) {
-        removeAlpaca(currentPosition)
         currentPosition--
-        addAlpaca(currentPosition)
     } else if (keyPress === "KeyD" && currentPosition % gridColumns !== gridColumns - 1) {
-        removeAlpaca(currentPosition)
         currentPosition++
-        addAlpaca(currentPosition)
-
-    }
+    } 
+    addAlpaca(currentPosition)
     increaseScore(currentPosition)
     removeLives(currentPosition)
 }
 
 
-let timeCountdownInterval
-let hasGameStarted = false
 function startTimer() {
     timeCountdownInterval = setInterval(() => {
         timeRemaining -= 1
@@ -255,6 +275,7 @@ function playGame() {
 }
 
 function generateBoard() {
+    cells = []
     for (let i = 0; i < gridSize; i++) {
         const cell = document.createElement('div')
         cell.classList.add("cell")
@@ -275,16 +296,18 @@ function generateBoard() {
     }
 
     addAlpaca(startPosition)
+    addLeftFacingCows(cowIndexs)
+    addRightFacingLogs(logIndexs)
 }
 
 generateBoard()
-addLeftFacingCows(cowIndexs)
-addRightFacingLogs(logIndexs)
+
 // Events
 
 startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
-tryAgainButton.addEventListener("click", playGame)
+tryAgainButton.addEventListener("click", resetGame)
 document.addEventListener('keydown', moveAlpaca)
+
 
 //need to addLeftFacingGames on keypress of continue
