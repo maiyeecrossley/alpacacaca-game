@@ -88,7 +88,9 @@ const gridSize = gridRows * gridColumns
 let cells = []
 
 let cowIndexs = [53, 54, 55]
-let logIndexs = [154, 155, 156]
+let logIndexs1 = [154, 155, 156]
+let logIndexs2 = [126, 129]
+
 
 let score = 0
 let timeRemaining = 30
@@ -154,27 +156,53 @@ function addLeftFacingCows() {
 function addRightFacingLogs() {
     let logInterval = setInterval(() => {
 
-        let originalLogIndex = [...logIndexs]
+        let originalLogIndex = [...logIndexs1]
 
         originalLogIndex.forEach((index) => {
             cells[index].classList.remove("logs-right")
         })
-        for (let i = 0; i < logIndexs.length; i++) {
-            logIndexs[i] += 1
-            if (logIndexs[i] > 167) {
+        for (let i = 0; i < logIndexs1.length; i++) {
+            logIndexs1[i] += 1
+            if (logIndexs1[i] > 167) {
                 clearInterval(logInterval)
-                logIndexs = [154, 156, 157]
+                logIndexs1 = [154, 156, 157], 
                 addRightFacingLogs()
                 return
             }
         }
 
-        logIndexs.forEach((position) => {
+        logIndexs1.forEach((position) => {
             cells[position].classList.add("logs-right")
         })
 
     }, 500)
 }
+
+function addRightFacingLogs2() {
+    let logInterval = setInterval(() => {
+
+        let originalLogIndex = [...logIndexs2]
+
+        originalLogIndex.forEach((index) => {
+            cells[index].classList.remove("logs-right")
+        })
+        for (let i = 0; i < logIndexs2.length; i++) {
+            logIndexs2[i] += 1
+            if (logIndexs2[i] > 139) {
+                clearInterval(logInterval)
+                logIndexs2 = [126, 129], 
+                addRightFacingLogs2()
+                return
+            }
+        }
+
+        logIndexs2.forEach((position) => {
+            cells[position].classList.add("logs-right")
+        })
+
+    }, 400)
+}
+
 
 
 function increaseScore(cellIndex) {
@@ -230,12 +258,13 @@ function removeAlpaca(position) {
 function moveAlpaca(event) {
     const keyPress = event.code
 
+    if (!hasGameStarted) {
+        startTimer()
+    }
+
     removeAlpaca(currentPosition)
 
     if (keyPress === "KeyW" && gridColumns <= currentPosition - 14) {
-        if (!hasGameStarted) {
-            startTimer()
-        }
         currentPosition -= gridColumns
     } else if (keyPress === "KeyS" && currentPosition + gridColumns <= gridSize - 14) {
         currentPosition += gridColumns
@@ -244,6 +273,7 @@ function moveAlpaca(event) {
     } else if (keyPress === "KeyD" && currentPosition % gridColumns !== gridColumns - 1) {
         currentPosition++
     }
+    
     addAlpaca(currentPosition)
     increaseScore(currentPosition)
     removeLives(currentPosition)
@@ -337,10 +367,14 @@ function generateBoard() {
         gridContainer.appendChild(cell)
         cells.push(cell)
     }
+
     startPosition = randomStartPosition(12)
+    removeAlpaca(currentPosition)
     addAlpaca(startPosition)
     addLeftFacingCows(cowIndexs)
-    addRightFacingLogs(logIndexs)
+    addRightFacingLogs(logIndexs1)
+    addRightFacingLogs2(logIndexs2)
+
 }
 
 generateBoard()

@@ -18,6 +18,14 @@ h1 {
     justify-content: center;
 }
 
+.hide {
+    display: none;
+}
+
+.show {
+    display: flex;
+}
+
 #start-screen,
 #how-to-play-screen,
 #game-over-screen,
@@ -41,6 +49,9 @@ h1 {
     font-family: "Lilita One", sans-serif;
     width: 200px;
     height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 20px;
     background-color: #846358;
     color: #b2f2bb;
@@ -190,10 +201,4 @@ div.background {
 }
 
 
-.hide {
-    display: none;
-}
 
-.show {
-    display: flex;
-}
