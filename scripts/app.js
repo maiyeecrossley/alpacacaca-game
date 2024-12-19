@@ -82,7 +82,6 @@
 const gridRows = 14
 const gridColumns = 14
 const gridSize = gridRows * gridColumns
-const startPosition = 174
 
 
 // Variables
@@ -93,6 +92,7 @@ let logIndexs = [154, 155, 156]
 
 let score = 0
 let timeRemaining = 30
+let startPosition = randomStartPosition(12)
 let currentPosition = startPosition
 let lives = 3
 let timeCountdownInterval
@@ -119,6 +119,9 @@ const numberOfLives = document.querySelector(".lives")
 
 // Functions
 
+function randomStartPosition(rowNumber) {
+    return Math.floor(Math.random() * gridColumns + (rowNumber * gridColumns))
+}
 
 
 function addLeftFacingCows() {
@@ -192,6 +195,7 @@ function removeLives(cellIndex) {
             gameOver()
             return
         }
+        startPosition = randomStartPosition(12)
         removeAlpaca(currentPosition)
         addAlpaca(startPosition)
         currentPosition = startPosition
@@ -207,6 +211,7 @@ function removeLives(cellIndex) {
             gameOver();
             return;
         }
+        startPosition = randomStartPosition(12)
         removeAlpaca(currentPosition)
         addAlpaca(startPosition)
         currentPosition = startPosition
@@ -266,7 +271,6 @@ function startTimer() {
 
 function gameReload() {
     startScreen.classList.remove("hide")
-    startScreen.classList.add("show")
     gameWonScreen.classList.add("hide")
 }
 
@@ -277,18 +281,20 @@ function displayInstructions() {
 }
 
 function playGame() {
-    howToPlayScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
+    howToPlayScreen.classList.add("hide")
 }
 
 function gameOver() {
     gameOverScreen.classList.remove("hide")
     gameScreen.classList.add("hide")
+
 }
 
 function gameWon() {
     gameWonScreen.classList.remove("hide")
     gameScreen.classList.add("hide")
+
 }
 
 
@@ -296,6 +302,7 @@ function resetGame() {
     gameOverScreen.classList.add("hide")
     gameScreen.classList.remove("hide")
     gameWonScreen.classList.add("hide")
+    startPosition = randomStartPosition(12)
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
     currentPosition = startPosition
@@ -330,7 +337,7 @@ function generateBoard() {
         gridContainer.appendChild(cell)
         cells.push(cell)
     }
-
+    startPosition = randomStartPosition(12)
     addAlpaca(startPosition)
     addLeftFacingCows(cowIndexs)
     addRightFacingLogs(logIndexs)
