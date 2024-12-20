@@ -243,6 +243,17 @@ function moveAlpaca(event) {
 }
 
 
+function dropCaca() {
+    if (!hasGameStarted) return
+
+    const cacaIndex = currentPosition
+    cells[cacaIndex].classList.add("caca")
+
+    setTimeout(() => {
+        cells[cacaIndex].classList.remove("caca");
+    }, 2000);
+}
+
 function startTimer() {
     timeCountdownInterval = setInterval(() => {
 
@@ -261,6 +272,13 @@ function startTimer() {
             timesUp()
         }
     }, 1000);
+
+    setTimeout(() => {
+        if (hasGameStarted) {
+            setInterval(dropCaca, 7000)
+        }
+    }, 7000)
+
     hasGameStarted = true
 }
 

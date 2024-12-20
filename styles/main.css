@@ -198,5 +198,18 @@ div.background {
     background-color: #b2f2bb;
 }
 
+div.caca::after {
+    content: " ";
+    background-image: url("../assets/images/easter-egg.gif");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 
 
