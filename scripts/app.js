@@ -86,12 +86,6 @@ const gridSize = gridRows * gridColumns
 
 // Variables
 let cells = []
-
-let cowIndexs = [53, 54, 55]
-let logIndexs1 = [153, 154, 155]
-let logIndexs2 = [126, 129]
-
-
 let score = 0
 let timeRemaining = 30
 let startPosition = randomStartPosition(12)
@@ -99,6 +93,7 @@ let currentPosition = startPosition
 let lives = 3
 let timeCountdownInterval
 let hasGameStarted = false
+let canScore = false;
 
 // Elements
 
@@ -110,8 +105,8 @@ const gameWonScreen = document.getElementById("game-won-screen")
 const startButton = document.getElementById("start-button")
 const continueButton = document.getElementById("continue-button")
 const tryAgainButton = document.getElementById("try-again-button")
-const nextLevelButton = document.getElementById("next-level-button")
-const quitGameButton = document.getElementById("quit-game-button")
+const playAgainButton = document.getElementById("play-again-button")
+const restartGameButton = document.getElementById("restart-button")
 
 const gridContainer = document.querySelector(".grid")
 const scoreElement = document.querySelector(".score")
@@ -125,85 +120,40 @@ function randomStartPosition(rowNumber) {
     return Math.floor(Math.random() * gridColumns + (rowNumber * gridColumns))
 }
 
+function spawn(asset, startIndex, endIndex, numberOfCows, interval = 500) {
+    let cellsTravelledCount = 0
+    let classListItem
+    if (asset === "cows") {
+        classListItem = "cow-right"
+    } else {
+        classListItem = "logs-right"
+    }
+    let spawnMovementInterval = setInterval(() => {
+        // Remove all cows
+        for (let i = 0; i < numberOfCows; i++) {
+            //start position of the first cow, the index of the cows, how many indexs the cow has moved, minus number of cows
+            let spawnIndex = startIndex + i + cellsTravelledCount - numberOfCows
+            cells[spawnIndex].classList.remove(classListItem)
+        }
+        // Spawn cows
+        for (let i = 0; i < numberOfCows; i++) {
+            let spawnIndex = startIndex + i + cellsTravelledCount
 
-function addLeftFacingCows() {
-    let cowInterval = setInterval(() => {
-
-        let originalCowIndex = [...cowIndexs]
-
-        originalCowIndex.forEach((index) => {
-            cells[index].classList.remove("cow-left")
-        })
-        for (let i = 0; i < cowIndexs.length; i++) {
-            cowIndexs[i] -= 1
-            if (cowIndexs[i] < 42) {
-                clearInterval(cowInterval)
-                cowIndexs = [53, 54, 55]
-                addLeftFacingCows()
+            if (spawnIndex - i > endIndex) {
+                clearInterval(spawnMovementInterval);
+                spawn(asset, startIndex, endIndex, numberOfCows)
                 return
             }
-        }
-
-        cowIndexs.forEach((position) => {
-            cells[position].classList.add("cow-left")
-            removeLives(position)
-        })
-
-    }, 400)
-}
-
-
-function addRightFacingLogs() {
-    let logInterval = setInterval(() => {
-
-        let originalLogIndex = [...logIndexs1]
-
-        originalLogIndex.forEach((index) => {
-            cells[index].classList.remove("logs-right")
-        })
-        for (let i = 0; i < logIndexs1.length; i++) {
-            logIndexs1[i] += 1
-            if (logIndexs1[i] > 167) {
-                clearInterval(logInterval)
-                logIndexs1 = [154, 156, 157], 
-                addRightFacingLogs()
-                return
+            if (spawnIndex > endIndex) {
+                continue
             }
+            cells[spawnIndex].classList.add(classListItem)
+
+            removeLives(spawnIndex)
         }
-
-        logIndexs1.forEach((position) => {
-            cells[position].classList.add("logs-right")
-        })
-
-    }, 500)
+        cellsTravelledCount++
+    }, interval)
 }
-
-function addRightFacingLogs2() {
-    let logInterval = setInterval(() => {
-
-        let originalLogIndex = [...logIndexs2]
-
-        originalLogIndex.forEach((index) => {
-            cells[index].classList.remove("logs-right")
-        })
-        for (let i = 0; i < logIndexs2.length; i++) {
-            logIndexs2[i] += 1
-            if (logIndexs2[i] > 139) {
-                clearInterval(logInterval)
-                logIndexs2 = [126, 129], 
-                addRightFacingLogs2()
-                return
-            }
-        }
-
-        logIndexs2.forEach((position) => {
-            cells[position].classList.add("logs-right")
-        })
-
-    }, 400)
-}
-
-
 
 function increaseScore(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") &&
@@ -215,13 +165,12 @@ function increaseScore(cellIndex) {
 
 function removeLives(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") &&
-        cells[cellIndex].classList.contains("cow-left")) {
+        cells[cellIndex].classList.contains("cow-right")) {
 
         lives -= 1
         numberOfLives.innerHTML = `Lives: ${lives}`
         if (lives === 0) {
             gameOver()
-            return
         }
         startPosition = randomStartPosition(12)
         removeAlpaca(currentPosition)
@@ -246,7 +195,6 @@ function removeLives(cellIndex) {
     }
 }
 
-
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
 }
@@ -256,6 +204,7 @@ function removeAlpaca(position) {
 }
 
 function moveAlpaca(event) {
+
     const keyPress = event.code
 
     if (!hasGameStarted) {
@@ -273,8 +222,9 @@ function moveAlpaca(event) {
     } else if (keyPress === "KeyD" && currentPosition % gridColumns !== gridColumns - 1) {
         currentPosition++
     }
-    
+
     addAlpaca(currentPosition)
+
     increaseScore(currentPosition)
     removeLives(currentPosition)
 
@@ -286,6 +236,12 @@ function moveAlpaca(event) {
 
 function startTimer() {
     timeCountdownInterval = setInterval(() => {
+
+        if (!hasGameStarted) {
+            clearInterval(timeCountdownInterval);
+            return;
+        }
+
         timeRemaining -= 1
         timerElement.innerHTML = `Time Remaining: 0:${timeRemaining}`
         if (timeRemaining < 10) {
@@ -299,42 +255,50 @@ function startTimer() {
     hasGameStarted = true
 }
 
-function gameReload() {
-    startScreen.classList.toggle("show")
-}
+// function gameReload() {
+//     gameWonScreen.classList.add("hide")
+//     startScreen.classList.remove("hide")
+//     // startScreen.classList.remove("hide")
+//     // gameWonScreen.classList.add("hide")
+//     // startScreen.classList.add("show")
+// }
 
 function displayInstructions() {
-    startScreen.classList.toggle("hide")
+    startScreen.classList.add("hide")
     startScreen.classList.toggle("show")
-    howToPlayScreen.classList.toggle("hide")
+    howToPlayScreen.classList.remove("hide")
     howToPlayScreen.classList.toggle("show")
 }
 
 function playGame() {
-    gameScreen.classList.toggle("hide")
-    howToPlayScreen.classList.toggle("hide")
+    gameScreen.classList.remove("hide")
+    howToPlayScreen.classList.add("hide")
     howToPlayScreen.classList.toggle("show")
 }
 
 function gameOver() {
-    gameOverScreen.classList.toggle("hide")
-    gameScreen.classList.toggle("hide")
     gameOverScreen.classList.toggle("show")
+    gameOverScreen.classList.remove("hide")
+    gameScreen.classList.add("hide")
 
 }
 
 function gameWon() {
-    gameWonScreen.classList.toggle("hide")
-    gameScreen.classList.toggle("hide")
-    gameWonScreen.classList.toggle("show")
-
+    hasGameStarted = false
+    gameWonScreen.classList.remove("hide")
+    gameWonScreen.classList.add("show")
+    // gameWonScreen.classList.toggle("show")
+    gameScreen.classList.add("hide")
 }
 
-
 function resetGame() {
-    gameOverScreen.classList.toggle("hide")
-    gameOverScreen.classList.toggle("show")
-    gameScreen.classList.toggle("hide")
+    gameOverScreen.classList.add("hide")
+    gameOverScreen.classList.remove("show")
+    // gameOverScreen.classList.toggle("show")
+    gameScreen.classList.remove("hide")
+    gameWonScreen.classList.add("hide")
+    gameWonScreen.classList.remove("show")
+
     startPosition = randomStartPosition(12)
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
@@ -370,14 +334,10 @@ function generateBoard() {
         gridContainer.appendChild(cell)
         cells.push(cell)
     }
-
     startPosition = randomStartPosition(12)
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
     currentPosition = startPosition
-    addLeftFacingCows(cowIndexs)
-
-
 }
 
 generateBoard()
@@ -388,5 +348,17 @@ startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
 tryAgainButton.addEventListener("click", resetGame)
 document.addEventListener('keydown', moveAlpaca)
-nextLevelButton.addEventListener("click", resetGame)
-quitGameButton.addEventListener("click", gameReload)
+// playAgainButton.addEventListener("click", resetGame)
+restartGameButton.addEventListener("click", resetGame)
+
+//asset type, start index, end index, number of assets, interval
+spawn("logs", 28, 41, 4, 500)
+spawn("cows", 42, 55, 0, 250)
+spawn("logs", 56, 69, 4, 200)
+spawn("cows", 70, 83, 0, 200)
+spawn("logs", 84, 97, 4, 600)
+spawn("cows", 98, 111, 2, 250)
+spawn("logs", 112, 125, 4, 500)
+spawn("logs", 126, 139, 3, 450)
+spawn("cows", 140, 153, 2, 150)
+spawn("logs", 154, 167, 3, 550)
