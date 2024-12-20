@@ -84,48 +84,40 @@ h1 {
     font-size: 20px;
     color: #846358;
     position: absolute;
-    top: 0px;
+    top: -10px;
     left: 20px;
     z-index: 10;
-    background-color: #b2f2bb;
-    padding: 5px 10px;
-    border-radius: 5px;
+
 }
 
 .lives {
     font-size: 20px;
     color: #846358;
     position: absolute;
-    top: 0px;
+    top: -10px;
     left: 500px;
     z-index: 10;
-    background-color: #b2f2bb;
-    padding: 5px 10px;
-    border-radius: 5px;
+
 }
 
 .level {
     font-size: 20px;
     color: #846358;
     position: absolute;
-    top: 0px;
+    top: -10px;
     left: 250px;
     z-index: 10;
-    background-color: #b2f2bb;
-    padding: 5px 10px;
-    border-radius: 5px;
+
 }
 
 .timer {
     font-size: 20px;
     color: #846358;
     position: absolute;
-    bottom: 0px;
+    bottom: -10px;
     left: 20px;
     z-index: 10;
-    background-color: #b2f2bb;
-    padding: 5px 10px;
-    border-radius: 5px;
+
 }
 
 .grid-wrapper {

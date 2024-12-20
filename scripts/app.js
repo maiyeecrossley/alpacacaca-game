@@ -93,7 +93,7 @@ let currentPosition = startPosition
 let lives = 3
 let timeCountdownInterval
 let hasGameStarted = false
-let canScore = false;
+let closestPositionToTopOfBoard
 
 // Elements
 
@@ -131,11 +131,11 @@ function spawn(asset, startIndex, endIndex, numberOfCows, interval = 500) {
     let spawnMovementInterval = setInterval(() => {
         // Remove all cows
         for (let i = 0; i < numberOfCows; i++) {
-            //start position of the first cow, the index of the cows, how many indexs the cow has moved, minus number of cows
+
             let spawnIndex = startIndex + i + cellsTravelledCount - numberOfCows
             cells[spawnIndex].classList.remove(classListItem)
         }
-        // Spawn cows
+
         for (let i = 0; i < numberOfCows; i++) {
             let spawnIndex = startIndex + i + cellsTravelledCount
 
@@ -155,6 +155,7 @@ function spawn(asset, startIndex, endIndex, numberOfCows, interval = 500) {
     }, interval)
 }
 
+
 function increaseScore(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") &&
         cells[cellIndex].classList.contains("logs-right")) {
@@ -162,6 +163,7 @@ function increaseScore(cellIndex) {
         scoreElement.innerHTML = `Score: ${score}`
     }
 }
+
 
 function removeLives(cellIndex) {
     if (cells[cellIndex].classList.contains("alpaca") &&
@@ -185,8 +187,8 @@ function removeLives(cellIndex) {
         lives -= 1;
         numberOfLives.innerHTML = `Lives: ${lives}`;
         if (lives === 0) {
-            gameOver();
-            return;
+            gameOver()
+            return
         }
         startPosition = randomStartPosition(12)
         removeAlpaca(currentPosition)
@@ -195,13 +197,16 @@ function removeLives(cellIndex) {
     }
 }
 
+
 function addAlpaca(position) {
     cells[position].classList.add("alpaca")
 }
 
+
 function removeAlpaca(position) {
     cells[position].classList.remove("alpaca")
 }
+
 
 function moveAlpaca(event) {
 
@@ -224,8 +229,11 @@ function moveAlpaca(event) {
     }
 
     addAlpaca(currentPosition)
+    if (closestPositionToTopOfBoard > currentPosition) {
+        closestPositionToTopOfBoard = currentPosition
+        increaseScore(currentPosition)
+    }
 
-    increaseScore(currentPosition)
     removeLives(currentPosition)
 
     if (currentPosition >= gridColumns && currentPosition < gridColumns * 2) {
@@ -238,8 +246,8 @@ function startTimer() {
     timeCountdownInterval = setInterval(() => {
 
         if (!hasGameStarted) {
-            clearInterval(timeCountdownInterval);
-            return;
+            clearInterval(timeCountdownInterval)
+            return
         }
 
         timeRemaining -= 1
@@ -255,13 +263,6 @@ function startTimer() {
     hasGameStarted = true
 }
 
-// function gameReload() {
-//     gameWonScreen.classList.add("hide")
-//     startScreen.classList.remove("hide")
-//     // startScreen.classList.remove("hide")
-//     // gameWonScreen.classList.add("hide")
-//     // startScreen.classList.add("show")
-// }
 
 function displayInstructions() {
     startScreen.classList.add("hide")
@@ -270,11 +271,13 @@ function displayInstructions() {
     howToPlayScreen.classList.toggle("show")
 }
 
+
 function playGame() {
     gameScreen.classList.remove("hide")
     howToPlayScreen.classList.add("hide")
     howToPlayScreen.classList.toggle("show")
 }
+
 
 function gameOver() {
     gameOverScreen.classList.toggle("show")
@@ -283,22 +286,22 @@ function gameOver() {
 
 }
 
+
 function gameWon() {
     hasGameStarted = false
     gameWonScreen.classList.remove("hide")
     gameWonScreen.classList.add("show")
-    // gameWonScreen.classList.toggle("show")
     gameScreen.classList.add("hide")
+
 }
+
 
 function resetGame() {
     gameOverScreen.classList.add("hide")
     gameOverScreen.classList.remove("show")
-    // gameOverScreen.classList.toggle("show")
     gameScreen.classList.remove("hide")
     gameWonScreen.classList.add("hide")
     gameWonScreen.classList.remove("show")
-
     startPosition = randomStartPosition(12)
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
@@ -311,6 +314,7 @@ function resetGame() {
     scoreElement.innerHTML = `Score: ${score}`
     lives = 3
     numberOfLives.innerHTML = `Lives: ${lives}`
+
 }
 
 
@@ -323,12 +327,16 @@ function generateBoard() {
         const row = Math.floor(i / gridColumns)
         if (row === 0 || row === 13) {
             cell.classList.add("background")
-        } else if (row === 12 || row === 10 || row === 7 || row === 5 || row === 3 || row === 1) {
+        } else if (row === 12 || 
+            row === 10 || 
+            row === 7 || 
+            row === 5 || 
+            row === 3 || 
+            row === 1) {
             cell.classList.add("grass")
         } else {
             cell.classList.add("water")
         }
-        cell.innerHTML = i
         cell.style.width = `${1400 / gridColumns}%`
         cell.style.height = `${1400 / gridRows}%`
         gridContainer.appendChild(cell)
@@ -338,6 +346,7 @@ function generateBoard() {
     removeAlpaca(currentPosition)
     addAlpaca(startPosition)
     currentPosition = startPosition
+    closestPositionToTopOfBoard = startPosition
 }
 
 generateBoard()
@@ -348,17 +357,16 @@ startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
 tryAgainButton.addEventListener("click", resetGame)
 document.addEventListener('keydown', moveAlpaca)
-// playAgainButton.addEventListener("click", resetGame)
 restartGameButton.addEventListener("click", resetGame)
 
-//asset type, start index, end index, number of assets, interval
-spawn("logs", 28, 41, 4, 500)
-spawn("cows", 42, 55, 0, 250)
+
+spawn("logs", 28, 41, 4, 150)
+spawn("cows", 42, 55, 2, 250)
 spawn("logs", 56, 69, 4, 200)
-spawn("cows", 70, 83, 0, 200)
-spawn("logs", 84, 97, 4, 600)
-spawn("cows", 98, 111, 2, 250)
-spawn("logs", 112, 125, 4, 500)
-spawn("logs", 126, 139, 3, 450)
-spawn("cows", 140, 153, 2, 150)
-spawn("logs", 154, 167, 3, 550)
+spawn("cows", 70, 83, 4, 800)
+spawn("logs", 84, 97, 4, 300)
+spawn("cows", 98, 111, 3, 600)
+spawn("logs", 112, 125, 4, 250)
+spawn("logs", 126, 139, 5, 170)
+spawn("cows", 140, 153, 2, 750)
+spawn("logs", 154, 167, 5, 250)
