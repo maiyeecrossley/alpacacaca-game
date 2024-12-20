@@ -102,11 +102,13 @@ const gameScreen = document.getElementById("game-screen")
 const howToPlayScreen = document.getElementById("how-to-play-screen")
 const gameOverScreen = document.getElementById("game-over-screen")
 const gameWonScreen = document.getElementById("game-won-screen")
+const timesUpScreen = document.getElementById("times-up")
 const startButton = document.getElementById("start-button")
 const continueButton = document.getElementById("continue-button")
 const tryAgainButton = document.getElementById("try-again-button")
 const playAgainButton = document.getElementById("play-again-button")
-const restartGameButton = document.getElementById("restart-button")
+const restartGameButton = document.getElementById("restart-button") 
+const timesUpTryAgainButton = document.getElementById("times-up-try-again-button")
 
 const gridContainer = document.querySelector(".grid")
 const scoreElement = document.querySelector(".score")
@@ -233,8 +235,7 @@ function moveAlpaca(event) {
         closestPositionToTopOfBoard = currentPosition
         increaseScore(currentPosition)
     }
-
-    removeLives(currentPosition)
+        removeLives(currentPosition)
 
     if (currentPosition >= gridColumns && currentPosition < gridColumns * 2) {
         gameWon()
@@ -257,7 +258,7 @@ function startTimer() {
         }
         if (timeRemaining <= 0) {
             clearInterval(timeCountdownInterval)
-            gameOver()
+            timesUp()
         }
     }, 1000);
     hasGameStarted = true
@@ -283,7 +284,16 @@ function gameOver() {
     gameOverScreen.classList.toggle("show")
     gameOverScreen.classList.remove("hide")
     gameScreen.classList.add("hide")
+    timesUpScreen.classList.add("hide")
+    clearInterval(timeCountdownInterval)
+    
+}
 
+function timesUp() {
+    gameOverScreen.classList.add("hide")
+    timesUpScreen.classList.remove("hide")
+    timesUpScreen.classList.add("show")
+    gameScreen.classList.add("hide")
 }
 
 
@@ -292,6 +302,7 @@ function gameWon() {
     gameWonScreen.classList.remove("hide")
     gameWonScreen.classList.add("show")
     gameScreen.classList.add("hide")
+    clearInterval(timeCountdownInterval)
 
 }
 
@@ -299,6 +310,8 @@ function gameWon() {
 function resetGame() {
     gameOverScreen.classList.add("hide")
     gameOverScreen.classList.remove("show")
+    timesUpScreen.classList.add("hide")
+    timesUpScreen.classList.remove("show")
     gameScreen.classList.remove("hide")
     gameWonScreen.classList.add("hide")
     gameWonScreen.classList.remove("show")
@@ -356,14 +369,16 @@ generateBoard()
 startButton.addEventListener("click", displayInstructions)
 continueButton.addEventListener("click", playGame)
 tryAgainButton.addEventListener("click", resetGame)
+timesUpTryAgainButton.addEventListener("click", resetGame)
 document.addEventListener('keydown', moveAlpaca)
 restartGameButton.addEventListener("click", resetGame)
 
 
+
 spawn("logs", 28, 41, 4, 150)
-spawn("cows", 42, 55, 2, 250)
-spawn("logs", 56, 69, 4, 200)
-spawn("cows", 70, 83, 4, 800)
+spawn("cows", 42, 55, 2, 550)
+spawn("logs", 56, 69, 5, 250)
+spawn("cows", 70, 83, 3, 800)
 spawn("logs", 84, 97, 4, 300)
 spawn("cows", 98, 111, 3, 600)
 spawn("logs", 112, 125, 4, 250)

@@ -47,6 +47,13 @@ The project took one week from day of planning with pseudocode, leading up to de
 
 ## Planning
 
+During the planning stage, I started off creating wireframes of the game that I would like it to look. As the planning continued, I included some pseudocode within the wireframes to easily guide me during the actual coding process.
+
+<img src="screenshots/Screenshot 2024-12-16 at 09.18.43.png" width="300" alt="screenshot of grid with cows and logs">
+<img src="screenshots/Screenshot 2024-12-20 at 11.24.59.png" alt="screenshot of wireframe planning, displaying multiple grids with labels to show the elements of the game">
+
+Once the initial idea was illustrated, it gave me a good starting point to write out more pseudocode. 
+
 
 
 ## Build Process
